@@ -43,7 +43,17 @@ export class AppComponent implements OnInit{
   }
 
   openAddEditEmpForm(){
-    this.dialog.open(EmpAddEditComponent)
+   const dialogRef =  this.dialog.open(EmpAddEditComponent)
+   dialogRef.afterClosed().subscribe({
+    next:(val) =>{
+      /* if save data return true then refresh data
+      otherwise not load
+          */
+      if(val){
+        this.getEmployeeList()
+      }
+    }
+   })
   }
 
   getEmployeeList(){
@@ -63,13 +73,34 @@ export class AppComponent implements OnInit{
     this.employeeService.deletemployee(id).subscribe({
       next:(res)=>{
         console.log(res)   
-        alert('Employee Deleted')     
+        alert('Employee Deleted')   
+        this.getEmployeeList()  
         },
       error:(err)=>{
         console.log(err)
       }
     })
   }
+
+  openEditEmpForm(data:any){
+   const dialogRef= this.dialog.open(EmpAddEditComponent,{
+    data
+   })
+
+   dialogRef.afterClosed().subscribe({
+    next:(val) =>{
+      /* if save data return true then refresh data
+      otherwise not load 
+          */
+      if(val){
+        this.getEmployeeList()
+      }
+    }
+    
+   })
+ 
+   
+   }
 
 
 
